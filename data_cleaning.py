@@ -65,3 +65,17 @@ multiLabel = multiLabel.rename({'title': 'song'}, axis=1)
 # write to csv and save in data folder 
 multiLabel.to_csv('data/cleaned_multiLabel.csv', index=False)
 
+
+
+#----------------------#
+# SINGLE LABEL DATASET #
+#----------------------#
+
+# removing unecessary columns 
+singleLabel = singleLabel.drop('album', 1)
+
+# renaming columns 
+singleLabel = singleLabel.rename({'title': 'song'}, axis=1)
+
+# write to csv and save in data folder 
+singleLabel.to_csv('data/cleaned_singleLabel.csv', index=False)
