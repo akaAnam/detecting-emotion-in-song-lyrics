@@ -16,6 +16,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Dataset proposed - https://aclanthology.org/2021.wassa-1.24.pdf
 # https://github.com/BaoChunhui/Generate-Emotional-Music
 
+# "labels" and "emotions" are used interchangeably throughout the code but mean
+# the same thing
+
 
 # Reading in data files
 multiLabel = pd.read_csv("data/MultiLabel.csv")
@@ -32,6 +35,9 @@ len(singleLabel.index)   # 1,160 songs
 #---------------------#
 
 # Splitting labels column so that its not a list of randomly arranged emotions:
+    # Will create a new column for each emotion class
+    # Will code a 0 if the emotion is not present and 1 if it is 
+    # calmness, tenderness ----> calmness: 1   tenderness: 1 
 
 # 1. Instantiate count vectorizer
 cv = CountVectorizer()
