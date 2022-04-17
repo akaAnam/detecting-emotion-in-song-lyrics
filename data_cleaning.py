@@ -54,3 +54,14 @@ dtm.head(10)
 multiLabel = multiLabel.join(dtm)
 multiLabel.head()
 
+
+# removing unecessary columns 
+remove_cols = ['album', 'labels']
+multiLabel = multiLabel.drop(remove_cols, 1)
+
+# renaming columns 
+multiLabel = multiLabel.rename({'title': 'song'}, axis=1)
+
+# write to csv and save in data folder 
+multiLabel.to_csv('data/cleaned_multiLabel.csv', index=False)
+
