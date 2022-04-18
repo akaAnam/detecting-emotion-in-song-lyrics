@@ -35,9 +35,9 @@ len(singleLabel.index)   # 1,160 songs
 #---------------------#
 
 # Splitting labels column so that its not a list of randomly arranged emotions:
-    # Will create a new column for each emotion class
-    # Will code a 0 if the emotion is not present and 1 if it is 
-    # calmness, tenderness ----> calmness: 1   tenderness: 1 
+# Will create a new column for each emotion class
+# Will code a 0 if the emotion is not present and 1 if it is
+# calmness, tenderness ----> calmness: 1   tenderness: 1
 
 # 1. Instantiate count vectorizer
 cv = CountVectorizer()
@@ -45,7 +45,7 @@ cv = CountVectorizer()
 # 2. Fit CV to our labels column
 freq = cv.fit_transform(multiLabel.labels)
 
-# 3. Create a DF 
+# 3. Create a DF
 # https://stackoverflow.com/questions/45905722/python-access-labels-of-sklearn-countvectorizer
 dtm = pd.DataFrame(freq.toarray(), columns=cv.get_feature_names())
 dtm.head(10)
@@ -55,27 +55,26 @@ multiLabel = multiLabel.join(dtm)
 multiLabel.head()
 
 
-# removing unecessary columns 
+# removing unecessary columns
 remove_cols = ['album', 'labels']
 multiLabel = multiLabel.drop(remove_cols, 1)
 
-# renaming columns 
+# renaming columns
 multiLabel = multiLabel.rename({'title': 'song'}, axis=1)
 
-# write to csv and save in data folder 
+# write to csv and save in data folder
 multiLabel.to_csv('data/cleaned_multiLabel.csv', index=False)
-
 
 
 #----------------------#
 # SINGLE LABEL DATASET #
 #----------------------#
 
-# removing unecessary columns 
+# removing unecessary columns
 singleLabel = singleLabel.drop('album', 1)
 
-# renaming columns 
+# renaming columns
 singleLabel = singleLabel.rename({'title': 'song'}, axis=1)
 
-# write to csv and save in data folder 
+# write to csv and save in data folder
 singleLabel.to_csv('data/cleaned_singleLabel.csv', index=False)
