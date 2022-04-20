@@ -1,3 +1,4 @@
+# Anam Khan
 # libraries
 import pandas as pd
 import numpy as np
@@ -61,6 +62,11 @@ multiLabel = multiLabel.drop(remove_cols, 1)
 
 # renaming columns
 multiLabel = multiLabel.rename({'title': 'song'}, axis=1)
+
+# checking for NAs 
+multiLabel.isna().sum()
+    # NAs are only present in year so that is ok 
+
 
 # write to csv and save in data folder
 multiLabel.to_csv('data/cleaned_multiLabel.csv', index=False)
