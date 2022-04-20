@@ -107,6 +107,12 @@ tfidf_df = tfidf_df.drop(columns=['____________'])
 ##  multi-label   ##
 ####################
 
+# -------------------
+# -------------------
+# LOGISTIC REGRESSION
+# -------------------
+# -------------------
+
 
 # Multi- LABEL classification of text
 # https://towardsdatascience.com/multi-label-text-classification-with-scikit-learn-30714b7819c5
@@ -213,3 +219,65 @@ accuracy_score(all_y_test, y_pred)
 
 # F1: 0.4471256210078069
 # Accuracy: 0.06896551724137931
+
+
+# -----------
+# -----------
+# NAIVE BAYES
+# -----------
+# -----------
+
+
+# 1.
+# -- Format labels for multi label classification--
+
+# ~ done above ~ 
+
+
+
+# 2.
+# -- Define a pipeline --
+
+nb = MultinomialNB()
+
+ovr = OneVsRestClassifier(nb)
+
+pipelineNB = make_pipeline(vectorizer, ovr)
+
+
+
+# 3.
+# -- Create test & train data --
+
+# ~ done above ~ 
+
+
+
+# # 4.
+# # -- train & predict --
+
+for emotion in emotions:
+    print('Processing {}'.format(emotion), "... ")
+
+    # train the model using X_dtm & y
+    pipelineNB.fit(X_train, train[emotion])
+
+    # compute the testing accuracy
+    prediction = pipelineNB.predict(X_test)
+    print('Test accuracy is {}'.format(
+        accuracy_score(test[emotion], prediction)))
+    print('Test F1 is {}'.format(f1_score(test[emotion], prediction)))
+    print('\n')
+    
+
+# ALL CATEGORIES AT ONCE ##
+
+# 4.
+# -- train & predict --
+
+pipelineNB.fit(all_X_train, all_y_train)
+y_pred = pipelineNB.predict(all_X_test)
+
+
+f1_score(all_y_test, y_pred, average="micro")
+accuracy_score(all_y_test, y_pred)
