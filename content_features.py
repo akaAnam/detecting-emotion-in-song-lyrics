@@ -9,6 +9,7 @@ Created on Wed Apr 20 11:51:13 2022
 # libraries
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 import re
 import matplotlib
 import numpy as np
@@ -22,6 +23,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
+from nltk.corpus import stopwords
 
 
 # Reading in cleaned data
@@ -100,6 +102,76 @@ tfidf_df = pd.DataFrame(X.toarray(), columns=multiLabel_featurenames)
 # drop first column since this is style and not context
 multiLabel_featurenames[0]
 tfidf_df = tfidf_df.drop(columns=['____________'])
+
+
+# -------------------------- 
+# -- Get the top features --
+# -------------------------- 
+
+# 1. 
+# define function to get top n features 
+# https://medium.com/@cristhianboujon/how-to-list-the-most-common-words-from-text-corpus-using-scikit-learn-dad4d0cab41d
+def get_top_n_words(corpus, n=None):
+    
+    vec = CountVectorizer().fit(corpus)
+    bag_of_words = vec.transform(corpus)
+    sum_words = bag_of_words.sum(axis=0) 
+    words_freq = [(word, sum_words[0, idx]) for word, idx in     vec.vocabulary_.items()]
+    words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+    return words_freq[:n]
+
+top10_stop = get_top_n_words(tfidf_multiLabel['lyrics'], 10)
+
+    # all of the top 10 words are stop words, lets remove stop words 
+
+# 2.
+# Remove stop words 
+stop = stopwords.words('english')
+
+# Exclude stopwords with Python's list comprehension and pandas.DataFrame.apply.
+tfidf_multiLabel['lyrics_without_stopwords'] = tfidf_multiLabel['lyrics']
+tfidf_multiLabel['lyrics_without_stopwords'] = tfidf_multiLabel['lyrics_without_stopwords'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
+
+# sanity check
+tfidf_multiLabel["lyrics_without_stopwords"][1]
+
+# 3.
+# get top n features excluding stopwords
+top10_no_stop = get_top_n_words(tfidf_multiLabel['lyrics_without_stopwords'], 10)
+
+top10_no_stop
+top10_stop
+
+# 4. 
+# Plot 
+word = []
+freq = []
+for item in top10_no_stop:
+   word.append(item[0])
+   freq.append(item[1])
+
+sns.barplot(word, freq, palette="Blues_r")
+plt.title("Top 10 Most Frequent Words in Song Lyrics")
+plt.ylabel('Frequency', fontsize=12)
+plt.xlabel('Words', fontsize=12)
+
+# stop words version 
+plt.savefig("visuals/top10_words_nostop.png")
+plt.show()
+
+word = []
+freq = []
+for item in top10_stop:
+   word.append(item[0])
+   freq.append(item[1])
+
+sns.barplot(word, freq, palette="Blues_r")
+plt.title("Top 10 Most Frequent Stop Words in Song Lyrics")
+plt.ylabel('Frequency', fontsize=12)
+plt.xlabel('Words', fontsize=12)
+
+plt.savefig("visuals/top10_words_stop.png")
+plt.show()
 
 
 ####################
