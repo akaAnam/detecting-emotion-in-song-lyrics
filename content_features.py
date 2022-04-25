@@ -104,66 +104,70 @@ multiLabel_featurenames[0]
 tfidf_df = tfidf_df.drop(columns=['____________'])
 
 
-# -------------------------- 
+# --------------------------
 # -- Get the top features --
-# -------------------------- 
+# --------------------------
 
-# 1. 
-# define function to get top n features 
+# 1.
+# define function to get top n features
 # https://medium.com/@cristhianboujon/how-to-list-the-most-common-words-from-text-corpus-using-scikit-learn-dad4d0cab41d
 def get_top_n_words(corpus, n=None):
-    
+
     vec = CountVectorizer().fit(corpus)
     bag_of_words = vec.transform(corpus)
-    sum_words = bag_of_words.sum(axis=0) 
-    words_freq = [(word, sum_words[0, idx]) for word, idx in     vec.vocabulary_.items()]
-    words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+    sum_words = bag_of_words.sum(axis=0)
+    words_freq = [(word, sum_words[0, idx])
+                  for word, idx in vec.vocabulary_.items()]
+    words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
     return words_freq[:n]
+
 
 top10_stop = get_top_n_words(tfidf_multiLabel['lyrics'], 10)
 
-    # all of the top 10 words are stop words, lets remove stop words 
+# all of the top 10 words are stop words, lets remove stop words
 
 # 2.
-# Remove stop words 
+# Remove stop words
 stop = stopwords.words('english')
 
 # Exclude stopwords with Python's list comprehension and pandas.DataFrame.apply.
 tfidf_multiLabel['lyrics_without_stopwords'] = tfidf_multiLabel['lyrics']
-tfidf_multiLabel['lyrics_without_stopwords'] = tfidf_multiLabel['lyrics_without_stopwords'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
+tfidf_multiLabel['lyrics_without_stopwords'] = tfidf_multiLabel['lyrics_without_stopwords'].apply(
+    lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
 
 # sanity check
 tfidf_multiLabel["lyrics_without_stopwords"][1]
 
 # 3.
 # get top n features excluding stopwords
-top10_no_stop = get_top_n_words(tfidf_multiLabel['lyrics_without_stopwords'], 10)
+top10_no_stop = get_top_n_words(
+    tfidf_multiLabel['lyrics_without_stopwords'], 10)
 
 top10_no_stop
 top10_stop
 
-# 4. 
-# Plot 
+# 4.
+# Plot
 word = []
 freq = []
 for item in top10_no_stop:
-   word.append(item[0])
-   freq.append(item[1])
+    word.append(item[0])
+    freq.append(item[1])
 
 sns.barplot(word, freq, palette="Blues_r")
 plt.title("Top 10 Most Frequent Words in Song Lyrics")
 plt.ylabel('Frequency', fontsize=12)
 plt.xlabel('Words', fontsize=12)
 
-# stop words version 
+# stop words version
 plt.savefig("visuals/top10_words_nostop.png", dpi=900)
 plt.show()
 
 word = []
 freq = []
 for item in top10_stop:
-   word.append(item[0])
-   freq.append(item[1])
+    word.append(item[0])
+    freq.append(item[1])
 
 sns.barplot(word, freq, palette="Blues_r")
 plt.title("Top 10 Most Frequent Stop Words in Song Lyrics")
@@ -303,8 +307,7 @@ accuracy_score(all_y_test, y_pred)
 # 1.
 # -- Format labels for multi label classification--
 
-# ~ done above ~ 
-
+# ~ done above ~
 
 
 # 2.
@@ -317,12 +320,10 @@ ovr = OneVsRestClassifier(nb)
 pipelineNB = make_pipeline(vectorizer, ovr)
 
 
-
 # 3.
 # -- Create test & train data --
 
-# ~ done above ~ 
-
+# ~ done above ~
 
 
 # # 4.
@@ -340,7 +341,7 @@ for emotion in emotions:
         accuracy_score(test[emotion], prediction)))
     print('Test F1 is {}'.format(f1_score(test[emotion], prediction)))
     print('\n')
-    
+
 
 # ALL CATEGORIES AT ONCE ##
 
