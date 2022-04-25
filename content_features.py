@@ -156,7 +156,7 @@ plt.ylabel('Frequency', fontsize=12)
 plt.xlabel('Words', fontsize=12)
 
 # stop words version 
-plt.savefig("visuals/top10_words_nostop.png")
+plt.savefig("visuals/top10_words_nostop.png", dpi=900)
 plt.show()
 
 word = []
@@ -170,7 +170,7 @@ plt.title("Top 10 Most Frequent Stop Words in Song Lyrics")
 plt.ylabel('Frequency', fontsize=12)
 plt.xlabel('Words', fontsize=12)
 
-plt.savefig("visuals/top10_words_stop.png")
+plt.savefig("visuals/top10_words_stop.png", dpi=900)
 plt.show()
 
 
