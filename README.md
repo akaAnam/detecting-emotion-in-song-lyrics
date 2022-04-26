@@ -1,1 +1,1 @@
-# detecting-emotion-in-song-lyrics
+# Detecting Emotions in Song Lyrics
