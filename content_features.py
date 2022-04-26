@@ -121,11 +121,6 @@ def get_top_n_words(corpus, n=None):
     words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
     return words_freq[:n]
 
-
-top10_stop = get_top_n_words(tfidf_multiLabel['lyrics'], 10)
-
-# all of the top 10 words are stop words, lets remove stop words
-
 # 2.
 # Remove stop words
 stop = stopwords.words('english')
@@ -144,7 +139,7 @@ top10_no_stop = get_top_n_words(
     tfidf_multiLabel['lyrics_without_stopwords'], 10)
 
 top10_no_stop
-top10_stop
+
 
 # 4.
 # Plot
@@ -159,23 +154,9 @@ plt.title("Top 10 Most Frequent Words in Song Lyrics")
 plt.ylabel('Frequency', fontsize=12)
 plt.xlabel('Words', fontsize=12)
 
-# stop words version
 plt.savefig("visuals/top10_words_nostop.png", dpi=900)
 plt.show()
 
-word = []
-freq = []
-for item in top10_stop:
-    word.append(item[0])
-    freq.append(item[1])
-
-sns.barplot(word, freq, palette="Blues_r")
-plt.title("Top 10 Most Frequent Stop Words in Song Lyrics")
-plt.ylabel('Frequency', fontsize=12)
-plt.xlabel('Words', fontsize=12)
-
-plt.savefig("visuals/top10_words_stop.png", dpi=900)
-plt.show()
 
 
 ####################
@@ -255,6 +236,10 @@ print(X_test.shape)
 emotions = ["amazement", "calmness", "joyful", "nostalgia",
             "power", "sadness", "solemnity", "tenderness", "tension"]
 
+# for table creation
+LR_accuracy = []
+LR_f1 = []
+
 for emotion in emotions:
     print('Processing {}'.format(emotion), "... ")
 
@@ -263,8 +248,11 @@ for emotion in emotions:
 
     # compute the testing accuracy
     prediction = pipeline.predict(X_test)
+    LR_accuracy.append(accuracy_score(test[emotion], prediction))
+    LR_f1.append(f1_score(test[emotion], prediction))
     print('Test accuracy is {}'.format(
         accuracy_score(test[emotion], prediction)))
+    
     print('Test F1 is {}'.format(f1_score(test[emotion], prediction)))
     print('\n')
 
@@ -290,11 +278,8 @@ pipeline.fit(all_X_train, all_y_train)
 y_pred = pipeline.predict(all_X_test)
 
 
-f1_score(all_y_test, y_pred, average="micro")
-accuracy_score(all_y_test, y_pred)
-
-# F1: 0.4471256210078069
-# Accuracy: 0.06896551724137931
+LR_f1_allAtOnce = f1_score(all_y_test, y_pred, average="micro")
+LR_accuracy_allAtOnce = accuracy_score(all_y_test, y_pred)
 
 
 # -----------
@@ -329,6 +314,10 @@ pipelineNB = make_pipeline(vectorizer, ovr)
 # # 4.
 # # -- train & predict --
 
+# for table creation
+NB_accuracy = []
+NB_f1 = []
+
 for emotion in emotions:
     print('Processing {}'.format(emotion), "... ")
 
@@ -337,10 +326,18 @@ for emotion in emotions:
 
     # compute the testing accuracy
     prediction = pipelineNB.predict(X_test)
+    NB_accuracy.append(accuracy_score(test[emotion], prediction))
+    NB_f1.append(f1_score(test[emotion], prediction))
     print('Test accuracy is {}'.format(
         accuracy_score(test[emotion], prediction)))
     print('Test F1 is {}'.format(f1_score(test[emotion], prediction)))
     print('\n')
+    
+    
+results = pd.DataFrame({'LR Accuracy' : LR_accuracy,
+                        'LR F1': LR_f1,
+                        'NB Accuracy' : NB_accuracy,
+                        'NB F1': NB_f1}, index = emotions)
 
 
 # ALL CATEGORIES AT ONCE ##
@@ -354,3 +351,18 @@ y_pred = pipelineNB.predict(all_X_test)
 
 f1_score(all_y_test, y_pred, average="micro")
 accuracy_score(all_y_test, y_pred)
+
+NB_f1_allAtOnce = f1_score(all_y_test, y_pred, average="micro")
+NB_accuracy_allAtOnce = accuracy_score(all_y_test, y_pred)
+
+results_allAtOnce = pd.DataFrame({'Accuracy' : [LR_accuracy_allAtOnce,NB_accuracy_allAtOnce],
+                        'F1': [LR_f1_allAtOnce,NB_f1_allAtOnce]},
+                                 index = ['Logistic Regression', 'Naive Bayes'])
+
+
+
+results
+# exporting to csv for table formatting outside of python
+# results.to_csv('data/content_results.csv', index=False)
+# results_allAtOnce 
+# results_allAtOnce.to_csv('data/content_results_allAtOnce.csv', index=False)
