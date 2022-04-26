@@ -47,12 +47,41 @@ multiLabel = multiLabel.drop(columns=['activation'])
 ########################
 
 # PART 2
-# stylometric features: punctuation, function words, digits 
+# stylometric features: function words
+
+# -----
+# TFIDF
+# -----
+
+# 1.
+# -- Text Preprocessing --
+
+# function to pre-process the text.
+# This will do the things we don't do in tfidfVectorizer like removing numbers
+def pre_process(text):
+
+    # lowercase
+    text = text.lower()
+
+    # remove tags
+    text = re.sub("", "", text)
+
+    # remove special characters and digits
+    text = re.sub("(\\d|\\W)+", " ", text)
+
+    return text
 
 # -----
 
 # create a duplicate of the multiLabel DF for manipulation
 style_multiLabel = multiLabel
+
+# apply our preprocessing function to entire lyrics columns
+style_multiLabel['lyrics'] = style_multiLabel['lyrics'].apply(
+    lambda x: pre_process(x))
+
+# sanity check
+style_multiLabel['lyrics'][2]
 
 # 1. 
 # replace "\n" with " "
@@ -60,9 +89,14 @@ style_multiLabel = multiLabel
 # our analyses. new line characters are only here because of the data format
 for i in range(len(style_multiLabel)):
     style_multiLabel['lyrics'][i] = style_multiLabel['lyrics'][i].replace("\n", " ")
+    
+# 2.
+# Keep stopwords with Python's list comprehension and pandas.DataFrame.apply.
+stop = stopwords.words('english')
+style_multiLabel['lyrics_with_only_stopwords'] = style_multiLabel['lyrics']
+style_multiLabel['lyrics_with_only_stopwords'] = style_multiLabel['lyrics_with_only_stopwords'].apply(
+    lambda x: ' '.join([word for word in x.split() if word in (stop)]))
 
-# sanity check
-style_multiLabel['lyrics'][4]
 
 # 2. 
 # tokenize each song's lyrics and save as a new col --> tok_lyrics
