@@ -25,7 +25,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
-from nltk.tokenize import word_tokenize # for stylometric features
+from nltk.tokenize import word_tokenize  # for stylometric features
 from nltk.corpus import stopwords
 import nltk
 import string
@@ -66,17 +66,18 @@ def pre_process(text):
 
     # remove tags
     text = re.sub("", "", text)
-    
-    # remove punctuation 
+
+    # remove punctuation
     for punctuation in string.punctuation:
         text = text.replace(punctuation, '')
 
     # remove special characters and digits
     text = re.sub("(\\d|\\W)+", " ", text)
-    
+
     return text
 
 # -----
+
 
 # create a duplicate of the multiLabel DF for manipulation
 style_multiLabel = multiLabel
@@ -88,13 +89,14 @@ style_multiLabel['lyrics'] = style_multiLabel['lyrics'].apply(
 # sanity check
 style_multiLabel['lyrics'][2]
 
-# 2. 
+# 2.
 # replace "\n" with " "
 # We don't want the back slashes to be interpreted as punctuation and mess w/
 # our analyses. new line characters are only here because of the data format
 for i in range(len(style_multiLabel)):
-    style_multiLabel['lyrics'][i] = style_multiLabel['lyrics'][i].replace("\n", " ")
-    
+    style_multiLabel['lyrics'][i] = style_multiLabel['lyrics'][i].replace(
+        "\n", " ")
+
 # 3.
 # Keep stopwords with Python's list comprehension and pandas.DataFrame.apply.
 stop = stopwords.words('english')
@@ -112,7 +114,6 @@ style_multiLabel['lyrics_with_only_stopwords'][4]
 # instantiate vectorizer
 vectorizer = TfidfVectorizer(
     lowercase=True, analyzer="word", use_idf=True)
-
 
 
 # --------------------------
@@ -133,9 +134,10 @@ def get_top_n_words(corpus, n=None):
     return words_freq[:n]
 
 
-top10_stop = get_top_n_words(style_multiLabel['lyrics_with_only_stopwords'], 10)
+top10_stop = get_top_n_words(
+    style_multiLabel['lyrics_with_only_stopwords'], 10)
 
-# 2. 
+# 2.
 # Plot
 
 word = []
@@ -261,7 +263,6 @@ LR_f1_allAtOnce = f1_score(all_y_test, y_pred, average="micro")
 LR_accuracy_allAtOnce = accuracy_score(all_y_test, y_pred)
 
 
-
 # -----------
 # -----------
 # NAIVE BAYES
@@ -314,11 +315,10 @@ for emotion in emotions:
     print('\n')
 
 
-results = pd.DataFrame({'LR Accuracy' : LR_accuracy,
+results = pd.DataFrame({'LR Accuracy': LR_accuracy,
                         'LR F1': LR_f1,
-                        'NB Accuracy' : NB_accuracy,
-                        'NB F1': NB_f1}, index = emotions)
-
+                        'NB Accuracy': NB_accuracy,
+                        'NB F1': NB_f1}, index=emotions)
 
 
 # ALL CATEGORIES AT ONCE ##
@@ -333,13 +333,13 @@ y_pred = pipelineNB.predict(all_X_test)
 NB_f1_allAtOnce = f1_score(all_y_test, y_pred, average="micro")
 NB_accuracy_allAtOnce = accuracy_score(all_y_test, y_pred)
 
-results_allAtOnce = pd.DataFrame({'Accuracy' : [LR_accuracy_allAtOnce,NB_accuracy_allAtOnce],
-                        'F1': [LR_f1_allAtOnce,NB_f1_allAtOnce]},
-                                 index = ['Logistic Regression', 'Naive Bayes'])
+results_allAtOnce = pd.DataFrame({'Accuracy': [LR_accuracy_allAtOnce, NB_accuracy_allAtOnce],
+                                  'F1': [LR_f1_allAtOnce, NB_f1_allAtOnce]},
+                                 index=['Logistic Regression', 'Naive Bayes'])
 
 
 results
 # exporting to csv for table formatting outside of python
-# results.to_csv('data/style_results.csv', index=False)
-# results_allAtOnce 
-# results_allAtOnce.to_csv('data/style_results_allAtOnce.csv', index=False)
+# results.to_csv('data/style_results.csv')
+# results_allAtOnce
+# results_allAtOnce.to_csv('data/style_results_allAtOnce.csv')

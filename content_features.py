@@ -121,6 +121,7 @@ def get_top_n_words(corpus, n=None):
     words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
     return words_freq[:n]
 
+
 # 2.
 # Remove stop words
 stop = stopwords.words('english')
@@ -156,7 +157,6 @@ plt.xlabel('Words', fontsize=12)
 
 plt.savefig("visuals/top10_words_nostop.png", dpi=900)
 plt.show()
-
 
 
 ####################
@@ -252,7 +252,7 @@ for emotion in emotions:
     LR_f1.append(f1_score(test[emotion], prediction))
     print('Test accuracy is {}'.format(
         accuracy_score(test[emotion], prediction)))
-    
+
     print('Test F1 is {}'.format(f1_score(test[emotion], prediction)))
     print('\n')
 
@@ -332,12 +332,12 @@ for emotion in emotions:
         accuracy_score(test[emotion], prediction)))
     print('Test F1 is {}'.format(f1_score(test[emotion], prediction)))
     print('\n')
-    
-    
-results = pd.DataFrame({'LR Accuracy' : LR_accuracy,
+
+
+results = pd.DataFrame({'LR Accuracy': LR_accuracy,
                         'LR F1': LR_f1,
-                        'NB Accuracy' : NB_accuracy,
-                        'NB F1': NB_f1}, index = emotions)
+                        'NB Accuracy': NB_accuracy,
+                        'NB F1': NB_f1}, index=emotions)
 
 
 # ALL CATEGORIES AT ONCE ##
@@ -355,14 +355,13 @@ accuracy_score(all_y_test, y_pred)
 NB_f1_allAtOnce = f1_score(all_y_test, y_pred, average="micro")
 NB_accuracy_allAtOnce = accuracy_score(all_y_test, y_pred)
 
-results_allAtOnce = pd.DataFrame({'Accuracy' : [LR_accuracy_allAtOnce,NB_accuracy_allAtOnce],
-                        'F1': [LR_f1_allAtOnce,NB_f1_allAtOnce]},
-                                 index = ['Logistic Regression', 'Naive Bayes'])
-
+results_allAtOnce = pd.DataFrame({'Accuracy': [LR_accuracy_allAtOnce, NB_accuracy_allAtOnce],
+                                  'F1': [LR_f1_allAtOnce, NB_f1_allAtOnce]},
+                                 index=['Logistic Regression', 'Naive Bayes'])
 
 
 results
 # exporting to csv for table formatting outside of python
-# results.to_csv('data/content_results.csv', index=False)
-# results_allAtOnce 
-# results_allAtOnce.to_csv('data/content_results_allAtOnce.csv', index=False)
+# results.to_csv('data/content_results.csv')
+# results_allAtOnce
+# results_allAtOnce.to_csv('data/content_results_allAtOnce.csv')
