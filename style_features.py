@@ -3,7 +3,7 @@
 """
 Created on Mon Apr 25 01:29:13 2022
 
-@author: anamkhan
+@author: anamkhan, swami venkateswaran, harrison lee
 """
 
 # link to dataset: https://github.com/imdiptanu/lyrics-emotion-detection

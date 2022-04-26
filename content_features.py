@@ -3,7 +3,7 @@
 """
 Created on Wed Apr 20 11:51:13 2022
 
-@author: anamkhan
+@author: anamkhan, swami venkat, harrison lee
 """
 
 # libraries
