@@ -13,7 +13,7 @@ Report your entity-level results in the table in Results. (Use `wnuteval.py`)
 `python ner_ablate.py --train_file emerging.train.conll --dev_file emerging.dev.conll`
 
 ## Results
-![](https://github.com/akaAnam/detecting-emotion-in-song-lyrics/blob/main/visuals/results_heatmap.png?raw=true)
+![](https://github.com/akaAnam/detecting-emotion-in-song-lyrics/blob/main/visuals/results_heatmap.PNG?raw=true)
 
 
 ## Conclusion
