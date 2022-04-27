@@ -26,11 +26,6 @@ and utilizes`CountVectorizer()` for one-hot encoding columns to indicate the pre
 - tenderness
 - tension
 
-`content_features.py` creates a feature set based off of lyrical content and trains a `LogisticRegression()`
-model as well as `MultinomialNB` model. 
-
-`style_features.py` creates a feature set based off of stopwords and trains a `LogisticRegression()`
-model as well as `MultinomialNB` model. 
 ## Results
 On average, the content feature set had slightly stronger predictive performance across most emotions. Both feature sets
 performed about the same on: 
@@ -58,4 +53,12 @@ accurately classify melancholic emotions like 'sadness' or 'solemnity'.
 We also found that developing a style-based feature set from song lyric data is difficult to accomplish, 
 given the arbitrary nature of transcribing punctuation from artists. Transcriptions can vary from artist to artist
 with little consistency, which underscores the potential importance of audio data as opposed to text data in
-developing a style-based feature set for multi-emotion classification. 
+developing a style-based feature set for multi-emotion classification.
+
+## Sample Script Usage
+`python data_cleaning.py` cleans the original dataset for ingestion into feature extraction and model building for the below scripts.
+
+`python content_features.py` creates a feature set based off of lyrical content and trains a Logistic Regression and Naive Bayes model for emotion classification. 
+
+`python style_features.py` creates a feature set based off of lyrical content and trains a Logistic Regression and Naive Bayes model for emotion classification. 
+
