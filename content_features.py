@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 20 11:51:13 2022
-
-@author: anamkhan, swami venkat, harrison lee
+@author: anamkhan, swami venkateswaran, harrison lee
 """
 
 # libraries
@@ -360,7 +358,7 @@ results_allAtOnce = pd.DataFrame({'Accuracy': [LR_accuracy_allAtOnce, NB_accurac
                                  index=['Logistic Regression', 'Naive Bayes'])
 
 
-results
+print(results)
 # exporting to csv for table formatting outside of python
 # results.to_csv('data/content_results.csv')
 # results_allAtOnce
