@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Apr 25 01:29:13 2022
-
 @author: anamkhan, swami venkateswaran, harrison lee
 """
 
