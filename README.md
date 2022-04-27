@@ -32,9 +32,30 @@ model as well as `MultinomialNB` model.
 `style_features.py` creates a feature set based off of stopwords and trains a `LogisticRegression()`
 model as well as `MultinomialNB` model. 
 ## Results
-On average, the feature set based off of lyrical content had stronger predictive performance across most emotions and both models. 
+On average, the content feature set had slightly stronger predictive performance across most emotions. Both feature sets
+performed about the same on: 
+- amazement
+- calmness
+
+While content features performed better in predicting the following emotions: 
+- joyful
+- nostalgia
+- power
+- tenderness
+- tension
+
+And style features better in predicting the following emotions:
+- sadness
+- solemnity
+
 ![](https://github.com/akaAnam/detecting-emotion-in-song-lyrics/blob/main/visuals/results_heatmap.PNG?raw=true)
 
-
 ## Conclusion
-Applications, limitations, further direction. 
+Going into this project, we hypothesized that content-based feature sets would be more important in accurately classifying
+multiple emotions given a lyrical dataset. Our findings reveal that is not the case, and that style-based feature sets tend to more
+accurately classify melancholic emotions like 'sadness' or 'solemnity'. 
+
+We also found that developing a style-based feature set from song lyric data is difficult to accomplish, 
+given the arbitrary nature of transcribing punctuation from artists. Transcriptions can vary from artist to artist
+with little consistency, which underscores the potential importance of audio data as opposed to text data in
+developing a style-based feature set for multi-emotion classification. 
