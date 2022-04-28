@@ -7,7 +7,7 @@ classification for song lyrics.
 
 ## Methodology
 Current literature around the multi-emotion classification problem for song lyrics compares classification algorithms,
-different emotion labels, as well as textual vs. audio analysis. (https://aclanthology.org/C18-1029.pdf) 
+different emotion labels, as well as textual vs. audio analysis. (https://aclanthology.org/2021.wassa-1.24/) 
 This project uses the concept of comparing "Topic or Style" (https://aclanthology.org/C18-1029.pdf) feature sets for 
 application in the multi-emotion classification problem. Following prior research, Logistic Regression and Naive Bayes classifiers
 are used as models for comparing the predictive performance of the two feature sets. 
