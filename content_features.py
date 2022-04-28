@@ -361,10 +361,6 @@ def main(multiLabel):
     f1_score(all_y_test, y_pred, average="micro")
     accuracy_score(all_y_test, y_pred)
 
-    fpr, tpr, thresholds = roc_curve(all_y_test, y_pred)
-    roc_auc = auc(fpr, tpr) 
-
-
     NB_f1_allAtOnce = f1_score(all_y_test, y_pred, average="micro")
     NB_accuracy_allAtOnce = accuracy_score(all_y_test, y_pred)
 
