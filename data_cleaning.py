@@ -26,14 +26,12 @@ from sklearn.feature_extraction.text import CountVectorizer
 # "labels" and "emotions" are used interchangeably throughout the code but mean
 # the same thing
 
-def main(multiLabel, singleLabel):
+def main(multiLabel):
 
     # Reading in data files
     multiLabel = pd.read_csv(multiLabel)
-    singleLabel = pd.read_csv(singleLabel)
 
     multiLabel.head()
-    singleLabel.head()
     #len(multiLabel.index)   # 1,160 songs
     #len(singleLabel.index)   # 1,160 songs
 
@@ -83,31 +81,11 @@ def main(multiLabel, singleLabel):
     print("multi label dataset stored in data/cleaned_multiLabel.csv")
     print("multi label dataset cleaning complete...\n\n")
 
-    #----------------------#
-    # SINGLE LABEL DATASET #
-    #----------------------#
-
-    # removing unecessary columns
-    singleLabel = singleLabel.drop('album', 1)
-
-    # renaming columns
-    singleLabel = singleLabel.rename({'title': 'song'}, axis=1)
-
-    # write to csv and save in data folder
-    singleLabel.to_csv('data/cleaned_singleLabel.csv', index=False)
-    print("\n\n")
-    print("SINGLE LABEL DATASET")
-    print("⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜\n")
-    print("single label dataset stored in data/cleaned_singleLabel.csv")
-    print("single label dataset cleaning complete...\n\n")
-
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--multiLabel", type=str, default="data/MultiLabel.csv",
                         help="multi label data file")
-    parser.add_argument("--singleLabel", type=str, default="data/SingleLabel.csv",
-                        help="single label data file")
     args = parser.parse_args()
-    main(args.multiLabel, args.singleLabel)
+    main(args.multiLabel)
